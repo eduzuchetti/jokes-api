@@ -47,7 +47,7 @@ jobs:
           command: sudo npm install -g serverless@2
       - run:
           name: configure-serverless
-          command: serverless config --provider aws --key ${AWS_ACCESS_KEY_ID} --secret ${AWS_SECRET_ACCESS_KEY}
+          command: serverless config credentials --provider aws --key ${AWS_ACCESS_KEY_ID} --secret ${AWS_SECRET_ACCESS_KEY}
       - run:
           name: serverless-deploy
           command: serverless deploy --stage ${STAGE}
