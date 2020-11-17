@@ -5,7 +5,8 @@ workflows:
   deploy-dev:
     jobs:
       - build
-      - deploy-dev
+      - deploy-dev:
+          context: development
 
 jobs:
   build:
