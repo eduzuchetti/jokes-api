@@ -5,21 +5,51 @@ workflows:
   build:
     jobs:
       - build
+  deploy:
+    jobs:
+      - deploy-dev
 
 jobs:
   build:
     docker:
-      - image: circleci/node:10.16.3
+      - image: circleci/node:12.19
     steps:
     - checkout
     - run:
         name: update-npm
-        command: 'sudo npm install -g npm@6'
+        command: npm install -g npm@6
     - restore_cache:
         key: dependency-cache-{{ checksum "package-lock.json" }}
     - run:
         name: install-npm-dependencies
         command: npm install
+    - save_cache:
+        key: dependency-cache-{{ checksum "package-lock.json" }}
+        paths:
+          - ./node_modules
     - run:
         name: build-sources
         command: npm run build
+    - save_cache:
+        key: dependency-cache-build
+        paths:
+          - ./build
+          
+  deploy-dev:
+    docker:
+      - image: circleci/node:12.19
+    steps:
+      - checkout
+      - run:
+          name: install-serverless
+          command: npm install -g serverless@2
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package-lock.json" }}
+      - restore_cache:
+          key: dependency-cache-build
+      - run:
+          name: remove-dev-dependencies
+          command: npm prune --production
+      - run:
+          name: serverless-deploy
+          command: serverless deploy --stage dev
