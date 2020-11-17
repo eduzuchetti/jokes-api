@@ -39,17 +39,16 @@ jobs:
     docker:
       - image: circleci/node:12.19
     steps:
-      - checkout
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package-lock.json" }}
+      - restore_cache:
+          key: dependency-cache-build
       - run:
           name: install-serverless
           command: sudo npm install -g serverless@2
       - run:
           name: configure-serverless
           command: serverless config --provider aws --key ${AWS_ACCESS_KEY_ID} --secret ${AWS_SECRET_ACCESS_KEY}
-      - restore_cache:
-          key: dependency-cache-{{ checksum "package-lock.json" }}
-      - restore_cache:
-          key: dependency-cache-build
       - run:
           name: serverless-deploy
           command: serverless deploy --stage ${STAGE}
