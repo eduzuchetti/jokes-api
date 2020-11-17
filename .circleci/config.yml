@@ -2,11 +2,9 @@ version: 2.1
 orbs:
   node: circleci/node@3.0.0
 workflows:
-  build:
+  deploy-dev:
     jobs:
       - build
-  deploy:
-    jobs:
       - deploy-dev
 
 jobs:
@@ -39,6 +37,7 @@ jobs:
     docker:
       - image: circleci/node:12.19
     steps:
+      - checkout
       - restore_cache:
           key: dependency-cache-{{ checksum "package-lock.json" }}
       - restore_cache:
