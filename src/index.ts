@@ -13,10 +13,4 @@ app.use(bodyParser.json())
 
 Routes(app)
 
-// const NODE_PORT: Number = Number(process.env.NODE_PORT || 3000)
-//
-// app.listen(NODE_PORT, function () {
-//     console.log("[INFO] HTTP Server created on port", NODE_PORT);
-// })
-
 export const handler: serverless.Handler = serverless(app)
