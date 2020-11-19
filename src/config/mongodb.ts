@@ -1,4 +1,4 @@
-import mongoose from "mongoose"
+import mongoose from 'mongoose'
 
 const options = {
     useNewUrlParser: true,
@@ -8,15 +8,32 @@ const options = {
     autoIndex: false,
     connectTimeoutMS: 3000,
     retryWrites: true,
-    w: "majority"
+    w: 'majority'
 }
 
-const mdb_uri: string = process.env.MONGO_DB_URI || 'mongodb://localhost/jokes'
+const mdb_uri: string = process.env.MONGO_DB_URI || 'mongodb://localhost:27017/jokes'
 
 mongoose.connect(mdb_uri, options).then(
-    () => { console.log("[INFO] Connected on", mongoose.connection.host) }
+    () => { console.info('Connected on', mongoose.connection.host) }
 ).catch(
-    error => console.error("[ERROR] Fail to connect on MongoDB:", error)
+    err => console.error('Fail to connect on MongoDB:', err)
 )
 
 export default mongoose.connection
+
+/** Adicional functions to control database connection */
+export const close = () => {
+    mongoose.connection.close().then(
+        () => { console.info('Connection closed calling mongoose.connection.close()') }
+    ).catch(
+        err => console.error('Failed to close connection via mongoose.connection.close():', err)
+    )
+}
+
+export const disconnect = () => {
+    mongoose.disconnect().then(
+        () => { console.info('Connection closed calling mongoose.connection.close()') }
+    ).catch(
+        err => console.error('Failed to close connection via mongoose.connection.close():', err)
+    )
+}
