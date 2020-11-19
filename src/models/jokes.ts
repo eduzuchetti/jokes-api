@@ -5,6 +5,10 @@ export default model('Jokes', new Schema({
         type: String,
         required: true
     },
+    has_answer: {
+        type: Boolean,
+        default: true
+    },
     answer: {
         type: String,
         required: false
