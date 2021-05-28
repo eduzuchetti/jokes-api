@@ -13,4 +13,5 @@ app.use(bodyParser.json())
 
 Routes(app)
 
+app.listen(3000, 'localhost')
 export const handler: serverless.Handler = serverless(app)

@@ -22,5 +22,9 @@ export default model('Jokes', new Schema({
         default: true
     },
     mainTheme: Array,
+    language: {
+        type: String,
+        default: "pt-br"
+    },
     author: [{ type: Schema.Types.ObjectId, ref: 'Users' }]
 }))
